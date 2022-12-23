@@ -4,8 +4,6 @@ on:
     types: [opened, synchronize, reopened]
     branches:
       - main
-  issue_comment:
-    types: [created]
 jobs:
   Pull-Request-Check:
     name: Unit Test & SonarCloud
@@ -27,30 +25,3 @@ jobs:
 
       - name: Run tests
         run: yarn test
-
-      - uses: actions/checkout@v2
-        if: >-
-          github.event.issue.pull_request != '' &&
-          (
-            contains(github.event.comment.body, '/rebeaseMain')
-          )
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          fetch-depth: 0
-          ref: main
-
-      - name: Rebase main with devlopment
-        if: >-
-            github.event.issue.pull_request != '' &&
-            (
-              contains(github.event.comment.body, '/rebeaseMain')
-            )
-        run: git pull --rebase origin development
-
-      - name: Push main
-        if: >-
-            github.event.issue.pull_request != '' &&
-            (
-              contains(github.event.comment.body, '/rebeaseMain')
-            )
-        run: git push origin main
