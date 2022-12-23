@@ -8,18 +8,36 @@ jobs:
   Pull-Request-Check:
     name: Unit Test & SonarCloud
     runs-on: ubuntu-latest
+    if: >-
+      github.event.issue.pull_request != '' &&
+      (
+        contains(github.event.comment.body, '/rebeaseMain')
+      )
 
     steps:
       - uses: actions/checkout@v2
         with:
+          token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
 
       - uses: actions/setup-node@v3.3.0
         with:
-          node-version: '14.20.0' 
+          node-version: '18'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install
 
       - name: Run tests
         run: yarn test
+
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 0
+           ref: main
+      - name: Rebase main with devlopment
+      - run: git pull --rebase origin development
+
+      - name: Push main
+      - run: git push origin main
