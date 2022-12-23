@@ -1,0 +1,40 @@
+name: release-to-prod
+on:
+  issue_comment:
+    types: [created]
+  pull_request_target:
+    branches:
+    - main
+jobs:
+  Pull-Request-Check:
+    name: Unit Test & SonarCloud
+    runs-on: ubuntu-latest
+    if: >-
+      github.event.issue.pull_request != '' &&
+      github.ref == 'refs/heads/development' &&
+      (
+        contains(github.event.comment.body, '/rebeaseMain')
+      )
+    steps:
+      - uses: actions/checkout@v2
+        
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 0
+          ref: main
+
+      - name: Rebase main with devlopment
+        if: >-
+            github.event.issue.pull_request != '' &&
+            (
+              contains(github.event.comment.body, '/rebeaseMain')
+            )
+        run: git pull --rebase origin development
+
+      - name: Push main
+        if: >-
+            github.event.issue.pull_request != '' &&
+            (
+              contains(github.event.comment.body, '/rebeaseMain')
+            )
+        run: git push origin main
