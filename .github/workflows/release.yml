@@ -1,0 +1,25 @@
+name: release-to-prod
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+jobs:
+  Pull-Request-Check:
+    name: Unit Test & SonarCloud
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v3.3.0
+        with:
+          node-version: '14.20.0' 
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests
+        run: yarn test
