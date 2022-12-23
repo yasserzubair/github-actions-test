@@ -23,6 +23,8 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           fetch-depth: 0
           ref: main
+      - name: pull main
+        run: git pull
 
       - name: Rebase main with devlopment
         run: git pull --rebase origin development
