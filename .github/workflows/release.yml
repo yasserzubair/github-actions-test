@@ -8,11 +8,6 @@ jobs:
   Pull-Request-Check:
     name: Unit Test & SonarCloud
     runs-on: ubuntu-latest
-    if: >-
-      github.event.issue.pull_request != '' &&
-      (
-        contains(github.event.comment.body, '/rebeaseMain')
-      )
 
     steps:
       - uses: actions/checkout@v2
@@ -30,6 +25,11 @@ jobs:
 
       - name: Run tests
         run: yarn test
+      if: >-
+        github.event.issue.pull_request != '' &&
+        (
+          contains(github.event.comment.body, '/rebeaseMain')
+        )
 
       - uses: actions/checkout@v2
         with:
