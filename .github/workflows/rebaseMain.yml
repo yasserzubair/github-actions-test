@@ -7,13 +7,14 @@ on:
     - main
 jobs:
   Pull-Request-Check:
-    name: Unit Test & SonarCloud
+    name: Pull development in main with Rebase
     runs-on: ubuntu-latest
     if: >-
       github.event.issue.pull_request != '' &&
       github.ref == 'refs/heads/development' &&
+      github.event.comment.author_association == 'OWNER'
       (
-        contains(github.event.comment.body, '/rebeaseMain')
+        contains(github.event.comment.body, '/rebaseMain')
       )
     steps:
       - uses: actions/checkout@v2
@@ -24,17 +25,7 @@ jobs:
           ref: main
 
       - name: Rebase main with devlopment
-        if: >-
-            github.event.issue.pull_request != '' &&
-            (
-              contains(github.event.comment.body, '/rebeaseMain')
-            )
         run: git pull --rebase origin development
 
       - name: Push main
-        if: >-
-            github.event.issue.pull_request != '' &&
-            (
-              contains(github.event.comment.body, '/rebeaseMain')
-            )
         run: git push origin main
