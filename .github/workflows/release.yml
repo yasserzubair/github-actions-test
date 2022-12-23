@@ -4,6 +4,8 @@ on:
     types: [opened, synchronize, reopened]
     branches:
       - main
+  issue_comment:
+    types: [created]
 jobs:
   Pull-Request-Check:
     name: Unit Test & SonarCloud
