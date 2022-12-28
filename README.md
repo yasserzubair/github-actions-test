@@ -5,3 +5,4 @@ Branch b1 commit 1
 Branch b2 commit 2
 Branch b3 commit 1
 Branch b3 commit 2
+Branch b3 commit 3
